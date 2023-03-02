@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Resty App Finds DELETE button 1`] = `
+<span
+  id="delete"
+>
+  DELETE
+</span>
+`;
+
+exports[`Resty App Finds GET button 1`] = `
+<span
+  id="get"
+>
+  GET
+</span>
+`;
+
+exports[`Resty App Finds POST button 1`] = `
+<span
+  id="post"
+>
+  POST
+</span>
+`;
+
+exports[`Resty App Finds PUT button 1`] = `
+<span
+  id="put"
+>
+  PUT
+</span>
+`;
+
+exports[`Resty App Finds URL strings in the app 1`] = `
+Array [
+  <div>
+    URL: 
+  </div>,
+  <span>
+    URL: 
+  </span>,
+]
+`;
