@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import './App.scss';
 
@@ -11,40 +11,61 @@ import Footer from './Components/Footer';
 import Form from './Components/Form';
 import Results from './Components/Results';
 
-class App extends React.Component {
+const App = () => {
+  const [data, setData] = useState({ count: 0, results: [] })
+  let [requestParams, setRequestParams] = useState({ method: '', url: '', params: '' })
+  const key = process.env.REACT_APP_OPEN_AI_SECRET_KEY
+  const org = process.env.REACT_APP_OPEN_AI_ORG
+  const callApi = async (req) => {
+    requestParams = req
+    const url = req.url;
+    const method = req.method;
+    const body = req.params
+    const res = await fetch(url, {
+      method: method,
+      headers:{
+        Authorization: `Bearer ${key}`,
+        "OpenAI-Organization": `${org}`,
+        "Content-Type": "application/json",
+      },
+      body: body
+    });
+    
+    if (res.ok) {
+      const responseJson = await res.json();
+      const data = {
+        status: res.status,
+        requestMethod: req.method,
+        url: req.url,
+        body: req.params,
+        count: 1,
+        results: [
+          responseJson.choices[0].message.content
+        ],
+      };
+      setData({...data});
+      setRequestParams({...requestParams});
+      return 
+    } else {
+      const error = await res.text();
+      return `${res.status} ${res.statusText} ${error}`;
+    }
+    
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      requestParams: {},
-    };
   }
+  
 
-  callApi = (requestParams) => {
-    // mock output
-    const data = {
-      count: 2,
-      results: [
-        {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-        {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-      ],
-    };
-    this.setState({data, requestParams});
-  }
-
-  render() {
     return (
       <React.Fragment>
         <Header />
-        <div>Request Method: {this.state.requestParams.method}</div>
-        <div>URL: {this.state.requestParams.url}</div>
-        <Form handleApiCall={this.callApi} />
-        <Results data={this.state.data} />
+        
+        <Form handleApiCall={callApi}/>
+        
+        <Results data={data} />
         <Footer />
       </React.Fragment>
     );
-  }
+  
 }
 
 export default App;
