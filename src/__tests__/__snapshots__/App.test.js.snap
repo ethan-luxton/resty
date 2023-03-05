@@ -31,14 +31,3 @@ exports[`Resty App Finds PUT button 1`] = `
   PUT
 </span>
 `;
-
-exports[`Resty App Finds URL strings in the app 1`] = `
-Array [
-  <div>
-    URL: 
-  </div>,
-  <span>
-    URL: 
-  </span>,
-]
-`;
